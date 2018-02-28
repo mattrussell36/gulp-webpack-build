@@ -11,7 +11,6 @@ const uglifycss = require('gulp-uglifycss');
 const browserSync = require('browser-sync');
 const webpack = require('webpack-stream');
 const CONFIG = require('./config.themes.json');
-const javascriptEntry = require('./webpack.parts').entry;
 const IS_PRODUCTION = argv.production ? true : false;
 const IS_WATCH = argv.watch ? true : false;
 const TARGETS = Object.keys(CONFIG);
@@ -19,16 +18,24 @@ const TARGET = argv._[0];
 const targets = TARGET ? [TARGET] : TARGETS;
 const webpackConfig = require('./webpack.config.js')(IS_PRODUCTION, IS_WATCH);
 
-function getFullPath(file, target) {
-    return path.resolve('themes', target, file);
+const tasks = IS_WATCH ?
+    ['browsersync', 'styles', 'webpack'] :
+    ['styles', 'webpack'];
+
+const javascriptEntry = require('./webpack.parts').entry;
+
+function getStyleEntry(target) {
+    const config = CONFIG[target];
+    const files = Object.values(config.styles).map(file => {
+        return path.resolve('themes', target, file);
+    });
+
+    return files;
 }
 
 gulp.task('styles', ['stylelint'], function () {
-    const tasks = targets.map((target) => {
-        const config = CONFIG[target];
-        const files = Object.values(config.styles).map(file => {
-            return getFullPath(file, target);
-        });
+    const tasks = targets.map(target => {
+        const files = getStyleEntry(target);
         
         return gulp.src(files)
             .pipe(sourcemaps.init())
@@ -51,10 +58,7 @@ gulp.task('styles', ['stylelint'], function () {
 
 gulp.task('stylelint', function () {
     const tasks = targets.map((target) => {
-        const config = CONFIG[target];
-        const files = Object.values(config.styles).map(file => {
-            return getFullPath(file, target);
-        });
+        const files = getStyleEntry(target);
         
         return gulp.src([
             './styles/**/*.scss',
@@ -87,10 +91,6 @@ gulp.task('browsersync', function () {
 gulp.task('default', TARGETS, function () {
     console.log(`All themes built in ${IS_PRODUCTION ? 'production' : 'development mode'}`);
 });
-
-const tasks = IS_WATCH ?
-    ['browsersync', 'styles', 'webpack'] :
-    ['styles', 'webpack'];
 
 TARGETS.forEach(function(target) {
     gulp.task(target, tasks, function() {
