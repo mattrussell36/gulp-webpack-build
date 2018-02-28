@@ -1,0 +1,23 @@
+{
+    "rules": {
+        "font-family-no-duplicate-names": true,
+        "at-rule-empty-line-before": [
+            "always", 
+            { 
+                "except": [
+                    "blockless-after-same-name-blockless", 
+                    "first-nested"
+                ], 
+                "ignore": [
+                    "after-comment",
+                    "inside-block"
+                ], 
+                "ignoreAtRules": [
+                    "if", 
+                    "else"
+                ] 
+            }
+        ],
+        "declaration-empty-line-before": null
+    }
+}

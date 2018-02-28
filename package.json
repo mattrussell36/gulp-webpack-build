@@ -1,0 +1,29 @@
+{
+  "name": "electrolux-buildpipeline",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.23.6",
+    "gulp": "^3.9.1",
+    "gulp-if": "^2.0.2",
+    "gulp-sass": "^3.1.0",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-stylelint": "^6.0.0",
+    "gulp-uglifycss": "^1.0.9",
+    "merge-stream": "^1.0.1",
+    "minimist": "^1.2.0",
+    "node-sass": "^4.7.2",
+    "stylelint": "^9.1.1",
+    "webpack": "^4.0.1",
+    "webpack-stream": "^4.0.2"
+  },
+  "dependencies": {
+    "express": "^4.16.2"
+  }
+}

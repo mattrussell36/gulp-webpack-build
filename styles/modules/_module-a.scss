@@ -1,0 +1,19 @@
+$bg: blue !default;
+$color: white !default;
+
+body {
+    color: $color;
+    background: $bg;
+
+    &::after {
+        @if $dir == 'rtl' {
+            content: 'rtl';
+        } @else {
+            content: 'normal';
+        }
+    }
+}
+
+h1 {
+    font-family: sans-serif;
+}

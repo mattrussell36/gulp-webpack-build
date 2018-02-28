@@ -1,0 +1,22 @@
+{
+    "a": {
+        "alias": "a",
+        "src": "aeg",
+        "styles": {
+            "styles": "styles.scss",
+            "styles-rtl": "styles-rtl.scss"
+        },
+        "icons": "aeg",
+        "fonts": {}
+    },
+    "b": {
+        "alias": "e",
+        "src": "electrolux",
+        "styles": {
+            "styles": "styles.scss",
+            "styles-rtl": "styles-rtl.scss"
+        },
+        "icons": "electrolux",
+        "fonts": {}
+    }
+}
