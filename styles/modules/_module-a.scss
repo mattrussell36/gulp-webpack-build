@@ -4,6 +4,7 @@ $color: white !default;
 body {
     color: $color;
     background: $bg;
+    display: flex;
 
     &::after {
         @if $dir == 'rtl' {

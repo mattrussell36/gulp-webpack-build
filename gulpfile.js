@@ -5,6 +5,7 @@ const merge = require('merge-stream');
 const sass = require('gulp-sass');
 const gulpif = require('gulp-if');
 const gulpStylelint = require('gulp-stylelint');
+const postcss = require('gulp-postcss');
 const sourcemaps = require('gulp-sourcemaps');
 const uglifycss = require('gulp-uglifycss');
 const browserSync = require('browser-sync');
@@ -32,16 +33,17 @@ gulp.task('styles', ['stylelint'], function () {
         return gulp.src(files)
             .pipe(sourcemaps.init())
             .pipe(sass().on('error', sass.logError))
-            .pipe(sourcemaps.write())
+            .pipe(postcss())
             .pipe(
                 gulpif(IS_PRODUCTION, uglifycss())
             )
-            .pipe(gulp.dest(`./build/${target}`))
             .pipe(
                 gulpif(IS_WATCH, browserSync.reload({
                     stream: true,
                 }))
-            );
+            )
+            .pipe(sourcemaps.write())
+            .pipe(gulp.dest(`./build/${target}`));
     });
     
     return merge(tasks);
