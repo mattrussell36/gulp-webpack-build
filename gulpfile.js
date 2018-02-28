@@ -33,6 +33,13 @@ function getStyleEntry(target) {
     return files;
 }
 
+function getScssGlob(target) {
+    return [
+        './styles/**/*.scss',
+        `./themes/${target}/**/*.scss`,
+    ];
+}
+
 gulp.task('styles', ['stylelint'], function () {
     const tasks = targets.map(target => {
         const files = getStyleEntry(target);
@@ -40,7 +47,7 @@ gulp.task('styles', ['stylelint'], function () {
         return gulp.src(files)
             .pipe(sourcemaps.init())
             .pipe(sass().on('error', sass.logError))
-            .pipe(postcss())
+            .pipe(postcss()) // gulp-postcss will grab postcss.config.js automatically
             .pipe(
                 gulpif(IS_PRODUCTION, uglifycss())
             )
@@ -59,11 +66,9 @@ gulp.task('styles', ['stylelint'], function () {
 gulp.task('stylelint', function () {
     const tasks = targets.map((target) => {
         const files = getStyleEntry(target);
+        const ScssGlob = getScssGlob(target);
         
-        return gulp.src([
-            './styles/**/*.scss',
-            `./themes/${target}/**/*.scss`,
-        ])
+        return gulp.src(ScssGlob)
             .pipe(gulpStylelint({
                 reporters: [
                     { formatter: 'string', console: true }
@@ -95,12 +100,10 @@ gulp.task('default', TARGETS, function () {
 TARGETS.forEach(function(target) {
     gulp.task(target, tasks, function() {
         console.log(`building ${target} in ${IS_PRODUCTION ? 'production' : 'development'} mode`);
+        const ScssGlob = getScssGlob(target);
 
         if (IS_WATCH) {
-            gulp.watch([
-                './styles/**/*.scss',
-                `./themes/${target}/**/*.scss`,
-            ], ['styles']);
+            gulp.watch(ScssGlob, ['styles']);
             console.log('Watching...');
         }
     });
